@@ -18,20 +18,20 @@ export default function AdminResultsPage() {
     (res) =>
       res.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       res.studentEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      res.testTitle.toLowerCase().includes(searchTerm.toLowerCase())
+      res.testTitle.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filteredResults.length / itemsPerPage);
   const paginatedResults = filteredResults.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-ocean-deep">All Results</h1>
-        
+
         <div className="flex items-center gap-3">
           <div className="relative w-full sm:w-[300px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ocean-muted" />
@@ -39,10 +39,13 @@ export default function AdminResultsPage() {
               placeholder="Search student or test..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 h-[42px] bg-muted border-border focus-visible:border-ocean"
+              className="pl-9 h-[42px] bg-surface-bg-light border-border focus-visible:border-ocean"
             />
           </div>
-          <Button variant="outline" className="border-ocean-deep text-ocean-deep hover:bg-ocean-mist h-[42px] gap-2">
+          <Button
+            variant="outline"
+            className="border-ocean-deep text-ocean-deep hover:bg-ocean-mist h-[42px] gap-2"
+          >
             <Download className="w-4 h-4" /> Export CSV
           </Button>
         </div>
@@ -65,31 +68,53 @@ export default function AdminResultsPage() {
             <tbody className="text-sm text-ocean-mid-text">
               {paginatedResults.length > 0 ? (
                 paginatedResults.map((result, idx) => {
-                  const isPass = result.status === 'Pass';
+                  const isPass = result.status === "Pass";
                   return (
-                    <tr key={result.id} className="border-b border-border last:border-0 hover:bg-ocean-mist transition-colors">
-                      <td className="px-6 py-4">{(currentPage - 1) * itemsPerPage + idx + 1}</td>
-                      <td className="px-6 py-4 font-medium text-ocean-text">{result.studentName}</td>
+                    <tr
+                      key={result.id}
+                      className="border-b border-border last:border-0 hover:bg-ocean-mist transition-colors"
+                    >
+                      <td className="px-6 py-4">
+                        {(currentPage - 1) * itemsPerPage + idx + 1}
+                      </td>
+                      <td className="px-6 py-4 font-medium text-ocean-text">
+                        {result.studentName}
+                      </td>
                       <td className="px-6 py-4">{result.studentEmail}</td>
-                      <td className="px-6 py-4 font-medium text-ocean-deep">{result.testTitle}</td>
-                      <td className="px-6 py-4 text-center">
-                        <ScorePill score={result.score} total={result.total} percentage={result.percentage} />
+                      <td className="px-6 py-4 font-medium text-ocean-deep">
+                        {result.testTitle}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className={cn(
-                          "inline-flex items-center justify-center px-2 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider",
-                          isPass ? "bg-success-bg text-success-text" : "bg-danger-bg text-danger-text"
-                        )}>
+                        <ScorePill
+                          score={result.score}
+                          total={result.total}
+                          percentage={result.percentage}
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span
+                          className={cn(
+                            "inline-flex items-center justify-center px-2 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider",
+                            isPass
+                              ? "bg-success-bg text-success-text"
+                              : "bg-danger-bg text-danger-text",
+                          )}
+                        >
                           {result.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4">{new Date(result.date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4">
+                        {new Date(result.date).toLocaleDateString()}
+                      </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-ocean-muted">
+                  <td
+                    colSpan={7}
+                    className="px-6 py-8 text-center text-ocean-muted"
+                  >
                     No results found matching your criteria.
                   </td>
                 </tr>
@@ -102,13 +127,15 @@ export default function AdminResultsPage() {
         {totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-white">
             <span className="text-sm text-ocean-muted">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredResults.length)} of {filteredResults.length} entries
+              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+              {Math.min(currentPage * itemsPerPage, filteredResults.length)} of{" "}
+              {filteredResults.length} entries
             </span>
             <div className="flex items-center gap-1">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -119,18 +146,20 @@ export default function AdminResultsPage() {
                   onClick={() => setCurrentPage(i + 1)}
                   className={cn(
                     "w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors",
-                    currentPage === i + 1 
-                      ? "bg-ocean text-white" 
-                      : "text-ocean-mid-text hover:bg-ocean-mist"
+                    currentPage === i + 1
+                      ? "bg-ocean text-white"
+                      : "text-ocean-mid-text hover:bg-ocean-mist",
                   )}
                 >
                   {i + 1}
                 </button>
               ))}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
               >
                 <ChevronRight className="w-4 h-4" />

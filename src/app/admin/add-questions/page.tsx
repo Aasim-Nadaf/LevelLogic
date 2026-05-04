@@ -7,6 +7,14 @@ import { Label } from "@/components/ui/label";
 import { mockTests } from "@/lib/mock-data";
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function AdminAddQuestionsPage() {
   const [questionText, setQuestionText] = useState("");
@@ -23,7 +31,13 @@ export default function AdminAddQuestionsPage() {
 
   const handleAddQuestion = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Adding question", { questionText, options, correctOption, difficulty, testId });
+    console.log("Adding question", {
+      questionText,
+      options,
+      correctOption,
+      difficulty,
+      testId,
+    });
     setQuestionText("");
     setOptions(["", "", "", ""]);
     setCorrectOption(0);
@@ -34,35 +48,40 @@ export default function AdminAddQuestionsPage() {
     <div className="max-w-[1400px] mx-auto h-full flex flex-col lg:flex-row gap-8">
       {/* Left Form (55%) */}
       <div className="flex-1 lg:max-w-[55%]">
-        <h1 className="text-2xl font-bold text-ocean-deep mb-6">Add Questions</h1>
+        <h1 className="text-2xl font-bold text-ocean-deep mb-6">
+          Add Questions
+        </h1>
         <div className="bg-white border border-border rounded-[14px] shadow-[var(--shadow-card-md)] p-6 sm:p-8">
           <form onSubmit={handleAddQuestion} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="test">Select Test</Label>
-              <select
-                id="test"
-                value={testId}
-                onChange={(e) => setTestId(e.target.value)}
-                required
-                className="w-full h-[42px] rounded-[10px] border border-border bg-muted px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-ocean focus-visible:ring-[3px] focus-visible:ring-ocean/20"
-              >
-                <option value="">Choose a test to add questions to...</option>
-                {mockTests.map((t) => (
-                  <option key={t.id} value={t.id}>{t.title}</option>
-                ))}
-              </select>
+              <Select value={testId} onValueChange={setTestId} required>
+                <SelectTrigger
+                  id="test"
+                  className="w-full h-[42px] rounded-[10px] border border-border bg-surface-bg-light px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20"
+                >
+                  <SelectValue placeholder="Choose a test to add questions to..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {mockTests.map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="question">Question Text</Label>
-              <textarea
+              <Textarea
                 id="question"
                 rows={4}
                 required
                 value={questionText}
                 onChange={(e) => setQuestionText(e.target.value)}
                 placeholder="Type the question here..."
-                className="w-full rounded-[10px] border border-border bg-muted p-3 text-sm text-foreground outline-none transition-colors focus-visible:border-ocean focus-visible:ring-[3px] focus-visible:ring-ocean/20 resize-none"
+                className="w-full rounded-[10px] border border-border bg-surface-bg-light p-3 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20 resize-none"
               />
             </div>
 
@@ -91,16 +110,16 @@ export default function AdminAddQuestionsPage() {
             <div className="space-y-2">
               <Label>Difficulty</Label>
               <div className="flex p-1 bg-sidebar border border-border rounded-[10px] w-full max-w-[300px]">
-                {['Easy', 'Medium', 'Hard'].map((diff) => (
+                {["Easy", "Medium", "Hard"].map((diff) => (
                   <button
                     type="button"
                     key={diff}
                     onClick={() => setDifficulty(diff)}
                     className={cn(
                       "flex-1 py-1.5 text-sm font-medium rounded-[8px] transition-all duration-200",
-                      difficulty === diff 
-                        ? "bg-white text-ocean border border-ocean shadow-sm" 
-                        : "text-ocean-mid-text hover:text-ocean-text"
+                      difficulty === diff
+                        ? "bg-white text-ocean border border-ocean shadow-sm"
+                        : "text-ocean-mid-text hover:text-ocean-text",
                     )}
                   >
                     {diff}
@@ -109,7 +128,12 @@ export default function AdminAddQuestionsPage() {
               </div>
             </div>
 
-            <Button variant="accent" type="submit" size="lg" className="w-full">
+            <Button
+              variant="default"
+              type="submit"
+              size="lg"
+              className="w-full"
+            >
               Add Question
             </Button>
           </form>
@@ -119,7 +143,7 @@ export default function AdminAddQuestionsPage() {
       {/* Right Preview (45%) */}
       <div className="flex-1 lg:max-w-[45%] lg:sticky lg:top-8 self-start">
         <h2 className="text-lg font-bold text-ocean-deep mb-4">Live Preview</h2>
-        
+
         {/* Render exactly as test UI */}
         <div className="w-full bg-white border border-border rounded-[16px] shadow-[var(--shadow-card-lg)] p-6 sm:p-9 relative">
           <div className="absolute -top-3 right-4 bg-ocean-sky text-ocean-deep text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded">
@@ -137,13 +161,17 @@ export default function AdminAddQuestionsPage() {
                   key={idx}
                   className={cn(
                     "flex items-center justify-between px-5 h-[56px] rounded-[10px] border transition-all duration-150",
-                    isSelected 
-                      ? "bg-ocean border-[#246D8C] text-white" 
-                      : "bg-white border-border text-ocean-mid-text"
+                    isSelected
+                      ? "bg-ocean border-[#246D8C] text-white"
+                      : "bg-white border-border text-ocean-mid-text",
                   )}
                 >
-                  <span className="text-sm font-medium">{option || `Option ${String.fromCharCode(65 + idx)}`}</span>
-                  {isSelected && <CheckCircle2 className="w-5 h-5 text-white" />}
+                  <span className="text-sm font-medium">
+                    {option || `Option ${String.fromCharCode(65 + idx)}`}
+                  </span>
+                  {isSelected && (
+                    <CheckCircle2 className="w-5 h-5 text-white" />
+                  )}
                 </div>
               );
             })}

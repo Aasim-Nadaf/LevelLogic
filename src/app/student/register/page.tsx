@@ -9,6 +9,7 @@ import { useAuthStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Layers, ArrowLeft, Sparkles } from "lucide-react";
 
 export default function StudentRegisterPage() {
   const router = useRouter();
@@ -19,82 +20,124 @@ export default function StudentRegisterPage() {
   });
 
   const onSubmit = (data: RegisterFormData) => {
-    // In a real app, this would be an API call to register, then login
     login(data.email, 'student');
     router.push('/student/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Left Panel */}
-      <div className="hidden lg:flex w-[40%] bg-ocean-deep flex-col justify-center px-16 text-white">
-        <h1 className="text-4xl font-bold mb-4">AptitudePro</h1>
-        <p className="text-lg font-normal text-white/80">
-          Join thousands of students improving their aptitude skills daily.
-        </p>
+    <div className="flex min-h-screen bg-canvas font-sans selection:bg-surface-mid">
+      {/* Left Panel - Visual */}
+      <div className="hidden lg:flex w-[45%] bg-primary flex-col justify-between p-12 text-primary-foreground relative overflow-hidden">
+        <div className="relative z-10">
+          <Link href="/" className="flex items-center gap-2 mb-20 group">
+            <div className="w-10 h-10 bg-primary-foreground rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
+              <Layers className="w-6 h-6 text-primary" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">LevelLogic</span>
+          </Link>
+          
+          <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 backdrop-blur-md border border-white/10">
+            <Sparkles className="w-8 h-8 text-white" />
+          </div>
+          
+          <h1 className="text-5xl font-bold leading-tight mb-6 max-w-md">
+            The standard <br />for logic prep.
+          </h1>
+          <p className="text-lg font-medium text-primary-foreground/70 max-w-sm leading-relaxed">
+            Create your account today and gain access to thousands of custom-tailored logic assessments and cognitive growth tracking.
+          </p>
+        </div>
+
+        <div className="relative z-10 flex items-center gap-8 text-sm font-semibold opacity-60">
+          <span>&copy; {new Date().getFullYear()} LevelLogic</span>
+          <Link href="#" className="hover:opacity-100 transition-opacity">Privacy</Link>
+          <Link href="#" className="hover:opacity-100 transition-opacity">Terms</Link>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Right Panel */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-background">
-        <div className="w-full max-w-[400px] bg-white border border-border rounded-[14px] shadow-[var(--shadow-card-lg)] p-9">
-          <h2 className="text-[22px] font-semibold text-ocean-deep mb-2">Create an Account</h2>
-          <p className="text-sm text-ocean-muted mb-6">Enter your details to register as a student.</p>
+      {/* Right Panel - Form */}
+      <div className="flex-1 flex flex-col p-8 md:p-12 lg:p-20 bg-canvas">
+        <div className="mb-auto">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-text-main transition-colors group lg:hidden">
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Back to Home
+          </Link>
+        </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+        <div className="w-full max-w-[440px] mx-auto py-8">
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-text-main mb-3">Create Account</h2>
+            <p className="text-text-muted font-medium">Start your journey to cognitive excellence.</p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-2.5">
+              <Label htmlFor="name" className="text-sm font-bold text-text-main">Full Name</Label>
               <Input
                 id="name"
+                className="h-12 rounded-xl border-hairline focus:ring-primary focus:border-primary transition-all px-4"
                 placeholder="Aarav Sharma"
                 {...register("name")}
                 aria-invalid={!!errors.name}
               />
               {errors.name && (
-                <p className="text-[12px] text-danger-text">{errors.name.message}</p>
+                <p className="text-xs font-bold text-danger-text mt-1">{errors.name.message}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+            <div className="space-y-2.5">
+              <Label htmlFor="email" className="text-sm font-bold text-text-main">Email Address</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                className="h-12 rounded-xl border-hairline focus:ring-primary focus:border-primary transition-all px-4"
+                placeholder="name@example.com"
                 {...register("email")}
                 aria-invalid={!!errors.email}
               />
               {errors.email && (
-                <p className="text-[12px] text-danger-text">{errors.email.message}</p>
+                <p className="text-xs font-bold text-danger-text mt-1">{errors.email.message}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-2.5">
+              <Label htmlFor="password" className="text-sm font-bold text-text-main">Password</Label>
               <Input
                 id="password"
                 type="password"
+                className="h-12 rounded-xl border-hairline focus:ring-primary focus:border-primary transition-all px-4"
                 placeholder="••••••••"
                 {...register("password")}
                 aria-invalid={!!errors.password}
               />
               {errors.password && (
-                <p className="text-[12px] text-danger-text">{errors.password.message}</p>
+                <p className="text-xs font-bold text-danger-text mt-1">{errors.password.message}</p>
               )}
             </div>
 
-            <Button type="submit" size="lg" className="w-full mt-2">
-              Create Account
+            <Button type="submit" size="lg" className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold shadow-premium hover:scale-[1.01] active:scale-[0.99] transition-all">
+              Initialize Account
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-ocean-mid-text">
+          <div className="mt-10 pt-8 border-t border-surface-soft text-center text-sm font-medium text-text-muted">
             Already have an account?{" "}
-            <Link href="/student/login" className="text-ocean font-semibold hover:underline">
-              Log in instead
+            <Link href="/student/login" className="text-text-main font-bold hover:underline transition-all">
+              Sign in instead
             </Link>
           </div>
+        </div>
+
+        <div className="mt-auto pt-12 flex justify-center lg:hidden">
+          <p className="text-xs font-semibold text-text-subtle tracking-wider uppercase">
+            &copy; {new Date().getFullYear()} LevelLogic Platform
+          </p>
         </div>
       </div>
     </div>
   );
 }
+

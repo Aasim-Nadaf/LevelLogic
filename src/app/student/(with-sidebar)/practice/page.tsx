@@ -25,7 +25,9 @@ export default function StudentPracticePage() {
   return (
     <div className="max-w-[1200px] mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-ocean-deep mb-2">Practice Categories</h1>
+        <h1 className="text-2xl font-bold text-ocean-deep mb-2">
+          Practice Categories
+        </h1>
         <p className="text-sm text-ocean-muted">
           Select a category to start practicing and improve your skills.
         </p>
@@ -33,15 +35,17 @@ export default function StudentPracticePage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {mockCategories.map((category) => (
-          <Card 
-            key={category.id} 
+          <Card
+            key={category.id}
             className="p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-card-lg)] flex flex-col justify-between"
           >
             <div className="flex items-start justify-between mb-6">
-              <div className={cn(
-                "w-12 h-12 rounded-full flex items-center justify-center",
-                bgMap[category.icon] || "bg-ocean-mist"
-              )}>
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-full flex items-center justify-center",
+                  bgMap[category.icon] || "bg-ocean-mist",
+                )}
+              >
                 {iconMap[category.icon]}
               </div>
               <div className="text-[12px] text-ocean-muted bg-muted px-2.5 py-1 rounded-full font-medium">
@@ -50,16 +54,17 @@ export default function StudentPracticePage() {
             </div>
 
             <div>
-              <h3 className="text-[15px] font-semibold text-ocean-text mb-1">{category.name}</h3>
+              <h3 className="text-[15px] font-semibold text-ocean-text mb-1">
+                {category.name}
+              </h3>
               <p className="text-[12px] text-ocean-muted mb-6">
-                Master core concepts and problem-solving techniques for {category.name.toLowerCase()}.
+                Master core concepts and problem-solving techniques for{" "}
+                {category.name.toLowerCase()}.
               </p>
             </div>
 
             <Button variant="secondary" className="w-full" asChild>
-              <Link href={`/student/practice/${category.id}`}>
-                View Tests
-              </Link>
+              <Link href={`/student/practice/${category.id}`}>View Tests</Link>
             </Button>
           </Card>
         ))}
