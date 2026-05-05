@@ -11,12 +11,12 @@ export function ScorePill({ score, total, percentage, className, ...props }: Sco
   const calcPercentage = percentage ?? (total ? (score / total) * 100 : score);
   
   let colorClass = "";
-  if (calcPercentage >= 75) {
-    colorClass = "bg-[#E6F4EE] text-[#1B5E42] border-[#9DD4BA]";
-  } else if (calcPercentage >= 50) {
-    colorClass = "bg-[#E8F4F8] text-[#1B4F72] border-[#5BA4BE]";
+  if (calcPercentage >= 80) {
+    colorClass = "bg-success-bg/30 text-success-text border-success-text/10";
+  } else if (calcPercentage >= 60) {
+    colorClass = "bg-warning-bg/30 text-warning-text border-warning-text/10";
   } else {
-    colorClass = "bg-[#FEF0F0] text-[#7A1B1B] border-[#F0B8B8]";
+    colorClass = "bg-danger-bg/30 text-danger-text border-danger-text/10";
   }
 
   const displayScore = total ? `${score}/${total}` : `${calcPercentage.toFixed(0)}%`;
@@ -24,7 +24,7 @@ export function ScorePill({ score, total, percentage, className, ...props }: Sco
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
+        "inline-flex items-center justify-center rounded-full border px-3 py-1 text-[10px] font-bold tracking-wider uppercase whitespace-nowrap transition-all shadow-sm",
         colorClass,
         className
       )}
@@ -34,3 +34,4 @@ export function ScorePill({ score, total, percentage, className, ...props }: Sco
     </div>
   )
 }
+
